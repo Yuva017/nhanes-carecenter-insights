@@ -5,7 +5,7 @@ Python ETL into PostgreSQL, SQL analytics, and insight dashboards on GitHub Page
 
 ## Architecture (layered)
 
-```
+```text
 data/raw/*.csv            NHANES source CSVs (Kaggle), never committed
         |
         v
@@ -45,8 +45,6 @@ python scripts/run_pipeline.py  # ETL
 python scripts/check_counts.py  # row counts per relation
 python src/carecenter/insights/export.py
 ```
-
-Demo video, report and the full Phase 2 deliverables live with the team report.
 
 ## License
 
