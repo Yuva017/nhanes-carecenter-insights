@@ -44,10 +44,31 @@ pip install -r requirements.txt
 cp .env.example .env            # set DATABASE_URL
 export DATABASE_URL="$(sed -n 's/^DATABASE_URL=//p' .env)"
 psql "$DATABASE_URL" -f database/create.sql
-python scripts/run_pipeline.py  # ETL
-python scripts/check_counts.py  # row counts per relation
+python -m scripts.run_pipeline  # ETL
+python -m scripts.check_counts  # row counts per relation
 python -m src.analytics.export  # refresh chart data from PostgreSQL
 ```
+
+The default pipeline configuration loads the first 25 rows from each source
+module for a quick sample. Set `pipeline.max_rows_per_module` to `null` in
+`config/config.yaml` to load all rows.
+
+## GitHub Actions
+
+Add `DATABASE_URL` as a repository Actions secret. Add `KAGGLE_API_TOKEN` too
+if Kaggle requires authentication to download the dataset.
+
+Both workflows are manually triggered from the Actions tab:
+
+1. **Load NHANES database** downloads the Kaggle CSV files and loads the
+   configured sample into PostgreSQL. The loader replaces the normalized table
+   contents, so use the intended database URL.
+2. **Refresh dashboard data** runs the aggregate queries, validates the JSON
+   files, and deploys the updated `public/` directory to GitHub Pages.
+
+The database must allow connections from GitHub-hosted runners. Configure
+network access using your database provider's recommended allowlisting or
+network integration.
 
 ## License
 

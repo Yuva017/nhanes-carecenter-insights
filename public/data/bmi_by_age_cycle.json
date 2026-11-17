@@ -1,0 +1,22 @@
+[
+  {
+    "period_label":"1988-1994",
+    "age_group":"20-39",
+    "avg_bmi":26.99
+  },
+  {
+    "period_label":"1988-1994",
+    "age_group":"40-59",
+    "avg_bmi":30.59
+  },
+  {
+    "period_label":"1988-1994",
+    "age_group":"60+",
+    "avg_bmi":24.44
+  },
+  {
+    "period_label":"1988-1994",
+    "age_group":"under 20",
+    "avg_bmi":24.24
+  }
+]

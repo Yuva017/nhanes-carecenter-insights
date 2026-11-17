@@ -1,7 +1,7 @@
 """Database engine and helpers."""
 
 import yaml
-from sqlalchemy import create_engine, text
+from sqlalchemy import create_engine
 
 from .config import load_config
 
@@ -15,4 +15,4 @@ def run_sql_file(engine, path) -> None:
     """Execute a .sql file as a single script."""
     sql = open(path, encoding="utf-8").read()
     with engine.begin() as conn:
-        conn.execute(text(sql))
+        conn.exec_driver_sql(sql)

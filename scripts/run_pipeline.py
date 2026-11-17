@@ -3,10 +3,10 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
-from config import load_config
-from jobs.load import run_pipeline
+from src.config import load_config
+from src.jobs.load import run_pipeline
 
 
 def main() -> None:

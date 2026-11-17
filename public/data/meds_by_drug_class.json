@@ -1,0 +1,34 @@
+[
+  {
+    "drug_class":"CARDIOVASCULAR AGENTS",
+    "entry_count":5
+  },
+  {
+    "drug_class":"TOPICAL AGENTS",
+    "entry_count":3
+  },
+  {
+    "drug_class":"ANTI-INFECTIVES",
+    "entry_count":3
+  },
+  {
+    "drug_class":"METABOLIC AGENTS",
+    "entry_count":2
+  },
+  {
+    "drug_class":"HORMONES\/HORMONE MODIFIERS",
+    "entry_count":2
+  },
+  {
+    "drug_class":"CENTRAL NERVOUS SYSTEM AGENTS",
+    "entry_count":2
+  },
+  {
+    "drug_class":"RESPIRATORY AGENTS",
+    "entry_count":2
+  },
+  {
+    "drug_class":"PSYCHOTHERAPEUTIC AGENTS",
+    "entry_count":1
+  }
+]

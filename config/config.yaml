@@ -7,8 +7,10 @@ data:
   processed_dir: data/processed
 
 pipeline:
-  # survey cycles (SDDSRVYR) to load; keep >= 2 so cycle-comparison queries work
-  cycles: [2015, 2016]
-  max_participants: 5000
-  # analyte codes selected for chemical_result (extend from chemical_analyte dictionary)
+  # NHANES release cycle codes; 1-11 map to release periods in jobs/transform.py.
+  cycles: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11]
+  max_participants: null
+  # Retain this many valid-cycle rows per raw module; set to null for a full load.
+  max_rows_per_module: 25
+  # Leave empty to load every chemical analyte found in the NHANES dictionary.
   analytes: []

@@ -3,11 +3,11 @@
 import sys
 from pathlib import Path
 
-sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "src"))
+sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 
 from sqlalchemy import text
 
-from db import get_engine
+from src.db import get_engine
 
 TABLES = [
     "survey_cycle", "participant", "demographic_profile", "mortality_profile",
