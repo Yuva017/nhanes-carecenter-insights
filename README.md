@@ -15,10 +15,10 @@ src/jobs/       extract -> transform -> load (pandas + SQLAlchemy)
 PostgreSQL (14 relations) schema in database/create.sql, bulk load in database/load.sql
         |
         v
-src/insights/  analytics queries -> JSON exports for charts
+src/analytics/ database queries -> JSON chart data in public/data/
         |
         v
-public/                     GitHub Pages site (Chart.js reads docs/data/*.json)
+public/                     GitHub Pages site (Chart.js reads public/data/*.json)
 ```
 
 ## Layers
@@ -30,9 +30,11 @@ public/                     GitHub Pages site (Chart.js reads docs/data/*.json)
    the 14 final relations with keys and constraints enforced.
 4. **Database** (`sql/create.sql`): 14 relations in BCNF with PK/FK rules per the
    Phase 1 report (RESTRICT on reference tables, CASCADE on participant children).
-5. **Insights** (`insights/export.py`): runs the analytics queries in
-   `sql/queries/`, exports small JSON files into `docs/data/`.
-6. **Presentation** (`docs/index.html`): static GitHub Pages dashboard.
+5. **Analytics** (`src/analytics/export.py`): runs analytics queries against
+   PostgreSQL and exports JSON files into `public/data/`.
+6. **Presentation** (`public/index.html`, `public/scripts/dashboard.js`,
+   `public/styles/`): interactive Chart.js dashboard with separate behavior and
+   stylesheets.
 
 ## Quick start
 
@@ -44,7 +46,7 @@ export DATABASE_URL="$(sed -n 's/^DATABASE_URL=//p' .env)"
 psql "$DATABASE_URL" -f database/create.sql
 python scripts/run_pipeline.py  # ETL
 python scripts/check_counts.py  # row counts per relation
-python src/carecenter/insights/export.py
+python -m src.analytics.export  # refresh chart data from PostgreSQL
 ```
 
 ## License
