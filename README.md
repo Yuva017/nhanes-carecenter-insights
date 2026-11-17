@@ -37,10 +37,11 @@ public/                     GitHub Pages site (Chart.js reads docs/data/*.json)
 ## Quick start
 
 ```bash
-python -m venv .venv && source .venv/bin/activate
+python3.12 -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 cp .env.example .env            # set DATABASE_URL
-psql "$DATABASE_URL" -f sql/create.sql
+export DATABASE_URL="$(sed -n 's/^DATABASE_URL=//p' .env)"
+psql "$DATABASE_URL" -f database/create.sql
 python scripts/run_pipeline.py  # ETL
 python scripts/check_counts.py  # row counts per relation
 python src/carecenter/insights/export.py
