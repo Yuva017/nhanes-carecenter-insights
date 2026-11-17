@@ -1,0 +1,14 @@
+database:
+  # DATABASE_URL from .env takes precedence
+  pool_size: 5
+
+data:
+  raw_dir: data/raw
+  processed_dir: data/processed
+
+pipeline:
+  # survey cycles (SDDSRVYR) to load; keep >= 2 so cycle-comparison queries work
+  cycles: [2015, 2016]
+  max_participants: 5000
+  # analyte codes selected for chemical_result (extend from chemical_analyte dictionary)
+  analytes: []

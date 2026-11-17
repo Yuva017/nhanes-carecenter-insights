@@ -1,0 +1,75 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>CareCenter Insights</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script
+      src="https://cdn.jsdelivr.net/npm/chart.js@4"
+      integrity=""
+      crossorigin="anonymous"
+    ></script>
+    <style>
+      body {
+        font-family: system-ui, sans-serif;
+        max-width: 960px;
+        margin: 2rem auto;
+        padding: 0 1rem;
+      }
+      h1 {
+        font-size: 1.5rem;
+      }
+      .chart {
+        margin: 2rem 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h1>CareCenter Insights</h1>
+    <p>
+      Analysis of the NHANES 1988-2018 harmonized survey, served from PostgreSQL
+      exports.
+    </p>
+    <div class="chart"><canvas id="bmiChart"></canvas></div>
+    <div class="chart"><canvas id="drugChart"></canvas></div>
+
+    <script type="module">
+      async function loadJSON(name) {
+        const r = await fetch(`data/${name}.json`);
+        if (!r.ok) return null;
+        return r.json();
+      }
+
+      const bmi = await loadJSON("bmi_by_age_cycle");
+      if (bmi) {
+        new Chart(document.getElementById("bmiChart"), {
+          type: "bar",
+          data: {
+            labels: bmi.map((d) => `${d.period_label} / ${d.age_group}`),
+            datasets: [
+              { label: "Average BMI", data: bmi.map((d) => d.avg_bmi) },
+            ],
+          },
+          options: { responsive: true },
+        });
+      }
+
+      const drugs = await loadJSON("meds_by_drug_class");
+      if (drugs) {
+        new Chart(document.getElementById("drugChart"), {
+          type: "bar",
+          data: {
+            labels: drugs.map((d) => d.drug_class),
+            datasets: [
+              {
+                label: "Medication entries",
+                data: drugs.map((d) => d.entry_count),
+              },
+            ],
+          },
+          options: { responsive: true },
+        });
+      }
+    </script>
+  </body>
+</html>
