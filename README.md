@@ -1,7 +1,7 @@
 # CareCenter Insights
 
 Relational database for the NHANES 1988-2018 health and nutrition survey:
-Python ETL into PostgreSQL, SQL analytics, and insight dashboards on GitHub Pages.
+Python ETL into PostgreSQL, SQL analytics, and a live dashboard powered by FastAPI on Render.
 
 ## Architecture (layered)
 
@@ -15,10 +15,10 @@ src/jobs/       extract -> transform -> load (pandas + SQLAlchemy)
 PostgreSQL (14 relations) schema in database/create.sql, bulk load in database/load.sql
         |
         v
-src/analytics/ database queries -> JSON chart data in public/data/
+src/api.py                  PostgreSQL aggregates over /api/charts/{dataset}
         |
         v
-public/                     GitHub Pages site (Chart.js reads public/data/*.json)
+public/                     Chart.js dashboard (Render or GitHub Pages)
 ```
 
 ## Layers
@@ -46,7 +46,7 @@ export DATABASE_URL="$(sed -n 's/^DATABASE_URL=//p' .env)"
 psql "$DATABASE_URL" -f database/create.sql
 python -m scripts.run_pipeline  # ETL
 python -m scripts.check_counts  # row counts per relation
-python -m src.analytics.export  # refresh chart data from PostgreSQL
+python -m uvicorn src.api:app --host 0.0.0.0 --port 8000  # serve the live dashboard
 ```
 
 The default pipeline configuration reads up to 25 rows per source module
@@ -103,9 +103,15 @@ Run the web backend against your loaded CareCenter PostgreSQL database:
 python -m uvicorn src.api:app --host 0.0.0.0 --port "${PORT:-8000}"
 ```
 
-The dashboard uses six aggregate queries under `database/sql/dashboard/`.
-Chart values describe the loaded records and are unweighted. For GitHub
-Pages, regenerate the JSON with `python -m src.analytics.export`.
+The dashboard requests `GET /api/charts/{dataset}`. The Render backend
+runs the corresponding SQL under `database/sql/dashboard/` against
+PostgreSQL and sends the results as JSON. Chart values describe the loaded
+records and are unweighted. On Render and during local development, the
+dashboard uses the same origin as the API. The project’s GitHub Pages
+deployment calls the Render API from its allowed origin.
+
+Use `python -m src.analytics.export` to create optional JSON snapshots.
+The live dashboard does not read the exported files.
 
 The medication workflow on the backend site runs a PostgreSQL function,
 a procedure, and an INSERT trigger against synthetic records. The database

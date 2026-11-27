@@ -1,3 +1,5 @@
+import { apiURL } from "./api.js";
+
 const buttons = [...document.querySelectorAll("[data-operation]")];
 const status = document.getElementById("operationStatus");
 const result = document.getElementById("operationResult");
@@ -22,7 +24,7 @@ async function runOperation(name) {
   status.classList.remove("status-error");
   result.hidden = true;
   try {
-    const response = await fetch(`api/operations/medications/${name}`, { method: "POST" });
+    const response = await fetch(apiURL(`operations/medications/${name}`), { method: "POST" });
     if (!response.ok) {
       throw new Error(
         [404, 405].includes(response.status)

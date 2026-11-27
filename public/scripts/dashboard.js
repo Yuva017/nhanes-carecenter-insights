@@ -1,21 +1,23 @@
+import { apiURL } from "./api.js";
+
 const status = document.getElementById("dashboardStatus");
 
-async function loadJSON(name) {
-  const response = await fetch(`data/${name}.json`);
+async function loadChartData(name) {
+  const response = await fetch(apiURL(`charts/${name}`));
   if (!response.ok) {
-    throw new Error(`${name}.json returned HTTP ${response.status}`);
+    throw new Error(`${name} returned HTTP ${response.status}`);
   }
 
   const rows = await response.json();
   if (!Array.isArray(rows)) {
-    throw new Error(`${name}.json must contain an array`);
+    throw new Error(`${name} must contain an array`);
   }
   return rows;
 }
 
 function requireRows(rows, name) {
   if (rows.length === 0) {
-    throw new Error(`${name}.json contains no chart data`);
+    throw new Error(`${name} contains no chart data`);
   }
   return rows;
 }
@@ -237,7 +239,7 @@ async function initializeDashboard() {
   ];
   const outcomes = await Promise.allSettled(charts.map(async ([dataset, canvas, draw]) => {
     try {
-      draw(requireRows(await loadJSON(dataset), dataset));
+      draw(requireRows(await loadChartData(dataset), dataset));
     } catch (error) {
       const message = document.createElement("p");
       message.className = "chart-unavailable";
@@ -248,7 +250,7 @@ async function initializeDashboard() {
   }));
   const ready = outcomes.filter(({ status }) => status === "fulfilled").length;
   status.textContent = ready === charts.length
-    ? "Charts loaded."
+    ? "Charts loaded from PostgreSQL."
     : `${ready} of ${charts.length} charts loaded. Some datasets are unavailable.`;
   status.classList.toggle("status-error", ready === 0);
 }
