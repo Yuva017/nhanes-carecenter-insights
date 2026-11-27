@@ -8,22 +8,19 @@ import pandas as pd
 from ..db import get_engine
 
 PROJECT_ROOT = Path(__file__).resolve().parents[2]
-QUERIES_FILE = PROJECT_ROOT / "database" / "sql" / "01_selects.sql"
+QUERIES_DIR = PROJECT_ROOT / "database" / "sql"
 DEFAULT_OUT_DIR = PROJECT_ROOT / "public" / "data"
 
-# Export only aggregate results used by the public charts.
+# Map each dashboard export to the SQL operation that produces it.
 ANALYTICS = {
-    "bmi_by_age_cycle": "-- Q1",
-    "meds_by_drug_class": "-- Q3",
-    "dietary_by_cycle": "-- Q5",
+    "bmi_by_age_cycle": "dashboard/bmi_by_age_cycle.sql",
+    "meds_by_drug_class": "dashboard/medication_use_by_drug_class.sql",
+    "dietary_by_cycle": "dashboard/dietary_intake_by_cycle.sql",
 }
 
 
-def load_query(marker: str) -> str:
-    sql = QUERIES_FILE.read_text(encoding="utf-8")
-    start = sql.index(marker)
-    end = sql.find("\n-- Q", start + 4)
-    return sql[start:end] if end != -1 else sql[start:]
+def load_query(query_path: str) -> str:
+    return (QUERIES_DIR / query_path).read_text(encoding="utf-8")
 
 
 def export_all(out_dir: Path) -> list[Path]:

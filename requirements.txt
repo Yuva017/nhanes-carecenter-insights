@@ -5,3 +5,5 @@ python-dotenv>=1.0
 pyyaml>=6.0
 pytest>=8.0
 kagglehub>=0.3.12
+fastapi
+uvicorn

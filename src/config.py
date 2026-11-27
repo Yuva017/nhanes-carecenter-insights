@@ -19,6 +19,8 @@ def load_config(path: Path | None = None) -> dict:
         database_url = database_url.replace(
             "postgres://", "postgresql+psycopg2://", 1
         )
+    elif database_url.startswith("postgresql://"):
+        database_url = database_url.replace("postgresql://", "postgresql+psycopg2://", 1)
     elif database_url.startswith("postgresql+psycopg://"):
         database_url = database_url.replace(
             "postgresql+psycopg://", "postgresql+psycopg2://", 1
