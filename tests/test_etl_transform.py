@@ -38,9 +38,9 @@ def test_extract_module_uses_clean_filename_and_filters_release_cycles(tmp_path)
 def test_participant_cycles_use_nhanes_period_labels():
     source = pd.DataFrame(
         {
-            "SEQN": [1, 2],
-            "SEQN_new": ["p1", "p2"],
-            "SDDSRVYR": [1, 10],
+            "SEQN": [1, 2, 3, 4],
+            "SEQN_new": ["p1", "p2", "p3", "p4"],
+            "SDDSRVYR": [-1, 1, 9, 10],
         }
     )
 
@@ -48,8 +48,10 @@ def test_participant_cycles_use_nhanes_period_labels():
     cycles = transform_survey_cycle(participants)
 
     assert cycles[["cycle_id", "period_label"]].to_dict("records") == [
-        {"cycle_id": 1, "period_label": "1988-1994"},
-        {"cycle_id": 10, "period_label": "2015-2016"},
+        {"cycle_id": -1, "period_label": "1988-1994"},
+        {"cycle_id": 1, "period_label": "1999-2000"},
+        {"cycle_id": 9, "period_label": "2015-2016"},
+        {"cycle_id": 10, "period_label": "2017-2018"},
     ]
 
 

@@ -27,8 +27,6 @@ def main() -> None:
             print(f"{t:24s} {n:>8d}")
     print("-" * 33)
     print(f"{'TOTAL':24s} {total:>8d}")
-    if total < 3000:
-        print("WARNING: below the 3,000-record course minimum")
 
 
 if __name__ == "__main__":

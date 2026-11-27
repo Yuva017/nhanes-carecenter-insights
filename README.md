@@ -49,9 +49,22 @@ python -m scripts.check_counts  # row counts per relation
 python -m src.analytics.export  # refresh chart data from PostgreSQL
 ```
 
-The default pipeline configuration loads the first 25 rows from each source
-module for a quick sample. Set `pipeline.max_rows_per_module` to `null` in
-`config/config.yaml` to load all rows.
+The default pipeline configuration reads up to 25 rows per source module
+for a quick sample. To load the available records for all 11 supported
+survey periods, run:
+
+```bash
+python -m scripts.run_pipeline --full
+python -m scripts.check_counts
+```
+
+`--full` removes both row caps and includes NHANES III (code `-1`) and
+the 10 continuous cycles (codes `1` through `10`). The project's field and
+analyte selections still apply.
+The loader reads the NHANES CSV files in `data/raw/` and replaces the
+normalized CareCenter tables in the PostgreSQL database set by
+`DATABASE_URL`. Use the intended database. The import does not create an
+Excel workbook.
 
 ## SQL layout and Python entry points
 
