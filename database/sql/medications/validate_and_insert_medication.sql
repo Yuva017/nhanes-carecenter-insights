@@ -1,10 +1,3 @@
--- Phase 2 Task 6: transaction with failure handling using a trigger
---
--- Pattern: a BEFORE-trigger validates the insert and raises an exception;
--- a wrapping procedure catches the failure, logs it into transaction_log
--- (the log write happens inside the EXCEPTION block, i.e. after the failed
--- statement's rollback), and re-raises so the caller sees the failure.
-
 CREATE TABLE IF NOT EXISTS transaction_log (
     log_id        BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     occurred_at   TIMESTAMPTZ NOT NULL DEFAULT now(),
@@ -28,7 +21,6 @@ CREATE TRIGGER trg_medication_validate
 BEFORE INSERT ON medication_entry
 FOR EACH ROW EXECUTE FUNCTION trg_medication_validate();
 
--- Wrapper transaction with failure handling
 CREATE OR REPLACE FUNCTION insert_medication_safe(
     p_participant VARCHAR(32), p_row_no INTEGER,
     p_drug VARCHAR(80), p_days NUMERIC
@@ -43,7 +35,5 @@ EXCEPTION WHEN others THEN
 END;
 $$ LANGUAGE plpgsql;
 
--- Demonstration:
+-- Fails validation, leaves the medication row uninserted, and re-raises:
 -- SELECT insert_medication_safe('<existing participant>', 1, 'BADCODE999', 30);
---   -> fails the trigger, row NOT inserted, failure logged in transaction_log;
---   -> the transaction aborts and rolls back, so the database state is unchanged.

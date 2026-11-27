@@ -53,6 +53,35 @@ The default pipeline configuration loads the first 25 rows from each source
 module for a quick sample. Set `pipeline.max_rows_per_module` to `null` in
 `config/config.yaml` to load all rows.
 
+## SQL layout and Python entry points
+
+- `database/create.sql` creates the application tables. The Python ETL in
+  `src/jobs/load.py` executes `database/load.sql` after staging the source data.
+- `database/sql/dashboard/` contains one query per dashboard export, loaded by
+  `python -m src.analytics.export`.
+- `database/sql/participants/` contains participant lookups, CRUD examples,
+  and participant routines. `database/sql/medications/` contains the validated
+  medication insert operation and its trigger.
+- `database/indexes.sql` contains candidate application indexes.
+- `database/validation/` groups SQL checks by schema, query, transaction,
+  normalization, concurrency, and performance operations. The
+  `run_validation.sql` entry point includes them in one PostgreSQL session;
+  `src/database_validation.py` runs it using synthetic data and temporary tables.
+
+Run the SQL checks from the project root using a separate database:
+
+```bash
+createdb carecenter_validation
+python -m scripts.validate_database --database carecenter_validation
+```
+
+Set `PGHOST`, `PGPORT`, and `PGUSER` if needed. For authentication, configure
+a PostgreSQL password file or a libpq service with `PGSERVICE`. The runner uses
+the explicitly named practice database. To capture commands and results in a
+file, append `> database_validation.log 2>&1`. See the
+[validation guide](database/validation/README.md) and the
+[two-session exercise](database/validation/manual_transactions.md).
+
 ## GitHub Actions
 
 Add `DATABASE_URL` as a repository Actions secret. Add `KAGGLE_API_TOKEN` too

@@ -1,5 +1,3 @@
--- Phase 2 Task 5: stored procedures/functions for common operations
-
 CREATE OR REPLACE FUNCTION add_participant(
     p_id VARCHAR(32), p_seqn BIGINT, p_cycle INTEGER,
     p_age SMALLINT DEFAULT NULL, p_sex VARCHAR(30) DEFAULT NULL
@@ -27,6 +25,6 @@ $$ LANGUAGE plpgsql;
 
 CREATE OR REPLACE FUNCTION delete_participant(p_id VARCHAR(32)) RETURNS VOID AS $$
 BEGIN
-    DELETE FROM participant WHERE participant_id = p_id; -- cascades
+    DELETE FROM participant WHERE participant_id = p_id;
 END;
 $$ LANGUAGE plpgsql;
