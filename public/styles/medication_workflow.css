@@ -1,0 +1,59 @@
+.operations-panel {
+  margin-top: 1.25rem;
+}
+
+.operations-panel button {
+  min-height: 2.6rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid #26766e;
+  border-radius: 0.45rem;
+  background: #fff;
+  color: #125c55;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.operations-panel button:hover,
+.operations-panel button:focus-visible {
+  background: #e7f3f0;
+}
+
+.operations-panel button:disabled {
+  cursor: wait;
+  opacity: 0.65;
+}
+
+.operation-status {
+  margin: 0.8rem 0;
+}
+
+.operation-table {
+  width: 100%;
+  max-width: 38rem;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.operation-table caption {
+  padding: 0.5rem 0;
+  text-align: left;
+  font-weight: 700;
+}
+
+.operation-table th,
+.operation-table td {
+  padding: 0.5rem 0.7rem 0.5rem 0;
+  border-bottom: 1px solid #e0e7e9;
+}
+
+.trigger-result {
+  margin: 0.85rem 0 0.35rem;
+}
+
+.operation-steps {
+  margin: 0;
+  padding-left: 1.3rem;
+  color: #52616b;
+}

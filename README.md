@@ -82,6 +82,24 @@ file, append `> database_validation.log 2>&1`. See the
 [validation guide](database/validation/README.md) and the
 [two-session exercise](database/validation/manual_transactions.md).
 
+## Live dashboard and database operations
+
+Run the web backend against your loaded CareCenter PostgreSQL database:
+
+```bash
+python -m uvicorn src.api:app --host 0.0.0.0 --port "${PORT:-8000}"
+```
+
+The dashboard uses six aggregate queries under `database/sql/dashboard/`.
+Chart values describe the loaded records and are unweighted. For GitHub
+Pages, regenerate the JSON with `python -m src.analytics.export`.
+
+The medication workflow on the backend site runs a PostgreSQL function,
+a procedure, and an INSERT trigger against synthetic records. The database
+role needs PostgreSQL temporary-table privileges for these operations.
+Every request rolls back the temporary changes. The invalid-code action
+also rolls back to a savepoint and displays the before-and-after values.
+
 ## GitHub Actions
 
 Add `DATABASE_URL` as a repository Actions secret. Add `KAGGLE_API_TOKEN` too

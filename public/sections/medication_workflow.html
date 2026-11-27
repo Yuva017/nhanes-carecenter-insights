@@ -1,0 +1,26 @@
+<section class="chart-card operations-panel" aria-labelledby="operationsTitle">
+  <div class="card-heading">
+    <div>
+      <h2 id="operationsTitle">Medication workflow</h2>
+      <p>Run a PostgreSQL function, call a stored procedure, or test a trigger. Each run starts with one fresh sample case.</p>
+    </div>
+  </div>
+  <div class="control-row" id="operationActions" aria-label="Medication operations">
+    <button type="button" data-operation="summary">Read case summary</button>
+    <button type="button" data-operation="record">Record valid medication</button>
+    <button type="button" data-operation="reject">Try an unknown code</button>
+  </div>
+  <p id="operationStatus" class="status operation-status" role="status" aria-live="polite">Operations run on temporary synthetic records.</p>
+  <div id="operationResult" hidden>
+    <table class="operation-table">
+      <caption>Sample case results</caption>
+      <thead><tr><th scope="col">Check</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
+      <tbody>
+        <tr><th scope="row">Case status</th><td id="beforeStatus"></td><td id="afterStatus"></td></tr>
+        <tr><th scope="row">Medication count</th><td id="beforeCount"></td><td id="afterCount"></td></tr>
+      </tbody>
+    </table>
+    <p class="trigger-result">Trigger <strong id="triggerResult"></strong></p>
+    <ol id="operationSteps" class="operation-steps"></ol>
+  </div>
+</section>

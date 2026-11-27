@@ -16,6 +16,9 @@ ANALYTICS = {
     "bmi_by_age_cycle": "dashboard/bmi_by_age_cycle.sql",
     "meds_by_drug_class": "dashboard/medication_use_by_drug_class.sql",
     "dietary_by_cycle": "dashboard/dietary_intake_by_cycle.sql",
+    "coverage_by_cycle": "dashboard/coverage_by_cycle.sql",
+    "systolic_by_age": "dashboard/systolic_by_age.sql",
+    "medication_records_per_participant": "dashboard/medication_records_per_participant.sql",
 }
 
 

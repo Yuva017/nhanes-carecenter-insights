@@ -156,23 +156,101 @@ function createDietaryChart(rows) {
   });
 }
 
-async function initializeDashboard() {
-  const [bmi, drugs, dietary] = await Promise.all([
-    loadJSON("bmi_by_age_cycle"),
-    loadJSON("meds_by_drug_class"),
-    loadJSON("dietary_by_cycle"),
-  ]);
-
-  createBmiChart(requireRows(bmi, "bmi_by_age_cycle"));
-  createDrugChart(requireRows(drugs, "meds_by_drug_class"));
-  createDietaryChart(requireRows(dietary, "dietary_by_cycle"));
-  status.textContent = "Charts loaded from the database exports.";
+function createCoverageChart(rows) {
+  new Chart(document.getElementById("coverageChart"), {
+    type: "line",
+    data: {
+      labels: rows.map((row) => row.period_label),
+      datasets: [
+        { label: "Loaded participants", data: rows.map((row) => row.participants), borderColor: "#253d56" },
+        { label: "With BMI", data: rows.map((row) => row.with_bmi), borderColor: "#26766e" },
+        { label: "With systolic BP", data: rows.map((row) => row.with_systolic), borderColor: "#b06b26" },
+      ],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: "index", intersect: false },
+      scales: { y: { beginAtZero: true, title: { display: true, text: "Participants" } } },
+    },
+  });
 }
 
-initializeDashboard().catch((error) => {
-  status.textContent =
-    `Could not load chart data: ${error.message}. ` +
-    "Run `python -m src.analytics.export` after loading the database.";
-  status.classList.add("status-error");
-  console.error("Dashboard initialization failed:", error);
-});
+function createSystolicChart(rows) {
+  new Chart(document.getElementById("systolicChart"), {
+    type: "bar",
+    data: {
+      labels: rows.map((row) => row.age_group),
+      datasets: [{
+        label: "Average systolic BP",
+        data: rows.map((row) => row.avg_systolic),
+        backgroundColor: "#3b82b4",
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: { y: { beginAtZero: true, title: { display: true, text: "mmHg" } } },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          callbacks: { afterLabel: ({ dataIndex }) => `Records: ${rows[dataIndex].observations}` },
+        },
+      },
+    },
+  });
+}
+
+function createMedicationCoverageChart(rows) {
+  const bandColors = {
+    "No linked entries": "#aebbc4",
+    "1 entry": "#26766e",
+    "2 entries": "#3b82b4",
+    "3+ entries": "#b06b26",
+  };
+  new Chart(document.getElementById("medicationCoverageChart"), {
+    type: "doughnut",
+    data: {
+      labels: rows.map((row) => row.entry_band),
+      datasets: [{
+        label: "Participants",
+        data: rows.map((row) => row.participants),
+        backgroundColor: rows.map((row) => bandColors[row.entry_band]),
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { position: "bottom" } },
+    },
+  });
+}
+
+async function initializeDashboard() {
+  const charts = [
+    ["bmi_by_age_cycle", "bmiChart", createBmiChart],
+    ["meds_by_drug_class", "drugChart", createDrugChart],
+    ["dietary_by_cycle", "dietaryChart", createDietaryChart],
+    ["coverage_by_cycle", "coverageChart", createCoverageChart],
+    ["systolic_by_age", "systolicChart", createSystolicChart],
+    ["medication_records_per_participant", "medicationCoverageChart", createMedicationCoverageChart],
+  ];
+  const outcomes = await Promise.allSettled(charts.map(async ([dataset, canvas, draw]) => {
+    try {
+      draw(requireRows(await loadJSON(dataset), dataset));
+    } catch (error) {
+      const message = document.createElement("p");
+      message.className = "chart-unavailable";
+      message.textContent = "Chart data is currently unavailable.";
+      document.getElementById(canvas).replaceWith(message);
+      throw error;
+    }
+  }));
+  const ready = outcomes.filter(({ status }) => status === "fulfilled").length;
+  status.textContent = ready === charts.length
+    ? "Charts loaded."
+    : `${ready} of ${charts.length} charts loaded. Some datasets are unavailable.`;
+  status.classList.toggle("status-error", ready === 0);
+}
+
+initializeDashboard();

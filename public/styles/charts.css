@@ -1,0 +1,33 @@
+.control {
+  display: grid;
+  gap: 0.35rem;
+  color: #465761;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.control input,
+.control select {
+  min-height: 2.4rem;
+  max-width: 13rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid #cbd6da;
+  border-radius: 0.45rem;
+  background: #fff;
+  color: #1d2b37;
+  font: inherit;
+}
+
+.control input:focus,
+.control select:focus {
+  outline: 2px solid #26766e;
+  outline-offset: 2px;
+}
+
+.chart-unavailable {
+  display: grid;
+  height: 100%;
+  place-content: center;
+  color: #64737d;
+  font-size: 0.9rem;
+}

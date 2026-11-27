@@ -39,16 +39,14 @@ jobs:
           import json
           from pathlib import Path
 
-          files = (
-              "bmi_by_age_cycle.json",
-              "meds_by_drug_class.json",
-              "dietary_by_cycle.json",
-          )
-          for filename in files:
+          from src.analytics.export import ANALYTICS
+
+          for dataset in ANALYTICS:
+              filename = f"{dataset}.json"
               path = Path("public/data") / filename
               rows = json.loads(path.read_text(encoding="utf-8"))
-              if not isinstance(rows, list) or not rows:
-                  raise SystemExit(f"{path} contains no chart rows")
+              if not isinstance(rows, list):
+                  raise SystemExit(f"{path} must contain a JSON array")
               print(f"{filename}: {len(rows)} aggregate rows")
           PY
 

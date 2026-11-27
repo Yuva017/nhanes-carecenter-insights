@@ -8,6 +8,6 @@ FROM participant pt
 JOIN survey_cycle sc ON sc.cycle_id = pt.cycle_id
 JOIN demographic_profile d ON d.participant_id = pt.participant_id
 JOIN physiological_profile p ON p.participant_id = pt.participant_id
-WHERE p.body_mass_index IS NOT NULL
+WHERE p.body_mass_index IS NOT NULL AND d.age_years IS NOT NULL
 GROUP BY sc.period_label, age_group
 ORDER BY sc.period_label, age_group;

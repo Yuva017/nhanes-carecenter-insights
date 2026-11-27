@@ -8,6 +8,8 @@
     <link rel="stylesheet" href="styles/base.css" />
     <link rel="stylesheet" href="styles/layout.css" />
     <link rel="stylesheet" href="styles/components.css" />
+    <link rel="stylesheet" href="styles/charts.css" />
+    <link rel="stylesheet" href="styles/medication_workflow.css" />
   </head>
   <body>
     <main class="dashboard">
@@ -16,89 +18,17 @@
         <h1>CareCenter Insights</h1>
         <p class="intro">
           Explore health, medication, and dietary trends from the survey
-          database.
+          database. Charts describe loaded survey records and are unweighted.
         </p>
         <p id="dashboardStatus" class="status" role="status" aria-live="polite">
           Loading chart data…
         </p>
       </header>
 
-      <section class="chart-grid" aria-label="Survey insights">
-        <article class="chart-card" aria-labelledby="bmiTitle">
-          <div class="card-heading">
-            <div>
-              <h2 id="bmiTitle">Average BMI by age and survey period</h2>
-              <p>Compare average body mass index across age groups.</p>
-            </div>
-            <label class="control">
-              <span>Survey period</span>
-              <select id="bmiPeriodFilter">
-                <option value="">All periods</option>
-              </select>
-            </label>
-          </div>
-          <div class="chart-frame">
-            <canvas
-              id="bmiChart"
-              role="img"
-              aria-label="Average BMI by age group and survey period"
-            ></canvas>
-          </div>
-        </article>
-
-        <article class="chart-card" aria-labelledby="medicationTitle">
-          <div class="card-heading">
-            <div>
-              <h2 id="medicationTitle">Medication entries by drug class</h2>
-              <p>Search classes or choose how many to display.</p>
-            </div>
-            <div class="control-row">
-              <label class="control">
-                <span>Search classes</span>
-                <input
-                  id="drugSearch"
-                  type="search"
-                  placeholder="Filter classes"
-                />
-              </label>
-              <label class="control">
-                <span>Show</span>
-                <select id="drugLimit">
-                  <option value="10">Top 10</option>
-                  <option value="25">Top 25</option>
-                  <option value="all">All</option>
-                </select>
-              </label>
-            </div>
-          </div>
-          <div class="chart-frame">
-            <canvas
-              id="drugChart"
-              role="img"
-              aria-label="Medication entries grouped by drug class"
-            ></canvas>
-          </div>
-        </article>
-
-        <article class="chart-card chart-card-wide" aria-labelledby="dietaryTitle">
-          <div class="card-heading">
-            <div>
-              <h2 id="dietaryTitle">Dietary intake by survey period</h2>
-              <p>
-                Average recorded dietary amount and number of participants.
-              </p>
-            </div>
-          </div>
-          <div class="chart-frame">
-            <canvas
-              id="dietaryChart"
-              role="img"
-              aria-label="Average dietary amount and participant count by survey period"
-            ></canvas>
-          </div>
-        </article>
-      </section>
+      <div id="surveyCharts"></div>
+      <div id="medicationWorkflow"></div>
+      <noscript>Enable JavaScript to load the charts and medication workflow.</noscript>
     </main>
-    <script type="module" src="scripts/dashboard.js"></script>
+    <script type="module" src="scripts/main.js"></script>
   </body>
 </html>

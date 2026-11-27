@@ -1,0 +1,104 @@
+<section class="chart-grid" aria-label="Survey insights">
+  <article class="chart-card" aria-labelledby="bmiTitle">
+    <div class="card-heading">
+      <div>
+        <h2 id="bmiTitle">Average BMI by age and survey period</h2>
+        <p>Compare average body mass index across age groups.</p>
+      </div>
+      <label class="control">
+        <span>Survey period</span>
+        <select id="bmiPeriodFilter">
+          <option value="">All periods</option>
+        </select>
+      </label>
+    </div>
+    <div class="chart-frame">
+      <canvas
+        id="bmiChart"
+        role="img"
+        aria-label="Average BMI by age group and survey period"
+      ></canvas>
+    </div>
+  </article>
+
+  <article class="chart-card" aria-labelledby="medicationTitle">
+    <div class="card-heading">
+      <div>
+        <h2 id="medicationTitle">Medication entries by drug class</h2>
+        <p>Search classes or choose how many to display.</p>
+      </div>
+      <div class="control-row">
+        <label class="control">
+          <span>Search classes</span>
+          <input
+            id="drugSearch"
+            type="search"
+            placeholder="Filter classes"
+          />
+        </label>
+        <label class="control">
+          <span>Show</span>
+          <select id="drugLimit">
+            <option value="10">Top 10</option>
+            <option value="25">Top 25</option>
+            <option value="all">All</option>
+          </select>
+        </label>
+      </div>
+    </div>
+    <div class="chart-frame">
+      <canvas
+        id="drugChart"
+        role="img"
+        aria-label="Medication entries grouped by drug class"
+      ></canvas>
+    </div>
+  </article>
+
+  <article class="chart-card" aria-labelledby="dietaryTitle">
+    <div class="card-heading">
+      <div>
+        <h2 id="dietaryTitle">Dietary intake by survey period</h2>
+        <p>
+          Average recorded dietary amount and number of participants.
+        </p>
+      </div>
+    </div>
+    <div class="chart-frame">
+      <canvas
+        id="dietaryChart"
+        role="img"
+        aria-label="Average dietary amount and participant count by survey period"
+      ></canvas>
+    </div>
+  </article>
+  <article class="chart-card" aria-labelledby="coverageTitle">
+    <div class="card-heading">
+      <div>
+        <h2 id="coverageTitle">Measurement coverage by survey period</h2>
+        <p>Compare loaded participants with those who have recorded BMI or systolic blood pressure.</p>
+      </div>
+    </div>
+    <div class="chart-frame"><canvas id="coverageChart" role="img" aria-label="Participant and measurement counts by period"></canvas></div>
+  </article>
+
+  <article class="chart-card" aria-labelledby="systolicTitle">
+    <div class="card-heading">
+      <div>
+        <h2 id="systolicTitle">Average systolic blood pressure by age</h2>
+        <p>Hover for the number of records contributing to each mean.</p>
+      </div>
+    </div>
+    <div class="chart-frame"><canvas id="systolicChart" role="img" aria-label="Average systolic blood pressure by age group"></canvas></div>
+  </article>
+
+  <article class="chart-card" aria-labelledby="medicationCoverageTitle">
+    <div class="card-heading">
+      <div>
+        <h2 id="medicationCoverageTitle">Medication entries per participant</h2>
+        <p>Shows records linked in the database. Missing links don’t establish whether someone took medication.</p>
+      </div>
+    </div>
+    <div class="chart-frame"><canvas id="medicationCoverageChart" role="img" aria-label="Distribution of linked medication entries per participant"></canvas></div>
+  </article>
+</section>

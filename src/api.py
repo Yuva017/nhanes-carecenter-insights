@@ -10,6 +10,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from .analytics.export import ANALYTICS, PROJECT_ROOT, load_query
+from .database_operations import Scenario, run_medication_operation
 from .db import get_engine
 
 logger = logging.getLogger(__name__)
@@ -43,6 +44,15 @@ def dashboard_data(dataset: str):
         media_type="application/json",
         headers={"Cache-Control": "no-store"},
     )
+
+
+@app.post("/api/operations/medications/{scenario}")
+def medication_operation(scenario: Scenario):
+    try:
+        return run_medication_operation(_engine(), scenario)
+    except (KeyError, OSError, SQLAlchemyError, RuntimeError) as error:
+        logger.warning("Could not run medication operation %s (%s)", scenario, type(error).__name__)
+        raise HTTPException(status_code=503, detail="Database operations are unavailable") from None
 
 
 # Match the dashboard's existing relative data/*.json URLs before serving files.
