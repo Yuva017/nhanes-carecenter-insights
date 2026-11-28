@@ -35,5 +35,19 @@ async function loadMedicationWorkflow() {
   }
 }
 
+async function loadDataValidation() {
+  try {
+    await mountSection("dataValidation", "../sections/data_validation.html");
+    await import("./data_validation.js");
+  } catch (error) {
+    const message = document.createElement("p");
+    message.className = "status status-error";
+    message.textContent = "Database validation could not load. Refresh the page to try again.";
+    document.getElementById("dataValidation").replaceChildren(message);
+    console.error(error);
+  }
+}
+
 loadCharts();
 loadMedicationWorkflow();
+loadDataValidation();

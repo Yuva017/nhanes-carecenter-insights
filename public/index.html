@@ -10,6 +10,7 @@
     <link rel="stylesheet" href="styles/components.css" />
     <link rel="stylesheet" href="styles/charts.css" />
     <link rel="stylesheet" href="styles/medication_workflow.css?v=medication-cohort-1" />
+    <link rel="stylesheet" href="styles/data_validation.css" />
     <link rel="stylesheet" href="styles/sql_activity.css" />
   </head>
   <body>
@@ -42,24 +43,27 @@
           <p id="dashboardStatus" class="status" role="status" aria-live="polite">
             Loading chart data…
           </p>
+          <a class="validation-link" href="#dataValidation">Database validation</a>
         </header>
 
         <div id="surveyCharts"></div>
         <div id="medicationWorkflow"></div>
-        <noscript>Enable JavaScript to load the charts and medication workflow.</noscript>
+        <div id="dataValidation"></div>
+        <noscript>Enable JavaScript to load the dashboard and validation exercises.</noscript>
       </main>
     </div>
     <!-- Keep all dashboard modules on the same release to avoid mixing cached versions. -->
     <script type="importmap">
       {
         "imports": {
-          "./scripts/api.js": "./scripts/api.js?v=medication-cohort-1",
-          "./scripts/dashboard.js": "./scripts/dashboard.js?v=medication-cohort-1",
-          "./scripts/database_operations.js": "./scripts/database_operations.js?v=medication-cohort-1",
-          "./scripts/sql_activity.js": "./scripts/sql_activity.js?v=medication-cohort-1"
+          "./scripts/api.js": "./scripts/api.js?v=database-validation-1",
+          "./scripts/dashboard.js": "./scripts/dashboard.js?v=database-validation-1",
+          "./scripts/database_operations.js": "./scripts/database_operations.js?v=database-validation-1",
+          "./scripts/data_validation.js": "./scripts/data_validation.js?v=database-validation-1",
+          "./scripts/sql_activity.js": "./scripts/sql_activity.js?v=database-validation-1"
         }
       }
     </script>
-    <script type="module" src="scripts/main.js?v=medication-cohort-1"></script>
+    <script type="module" src="scripts/main.js?v=database-validation-1"></script>
   </body>
 </html>

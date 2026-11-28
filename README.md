@@ -111,8 +111,8 @@ dashboard uses the same origin as the API. The project’s GitHub Pages
 deployment calls the Render API from its allowed origin.
 
 The collapsible **SQL activity** pane groups server-captured statements by
-chart request or medication action. It includes failed statements and
-rollbacks from the medication review. Entries are kept in the current page,
+dashboard request. It includes failed statements and rollbacks from the
+medication review. Entries are kept in the current page,
 and bound parameter values are excluded. The dashboard requests the trace
 with `?include_sql=true`; regular API responses keep their existing shape.
 
@@ -126,6 +126,13 @@ the list, and a trigger rejects the entire list if a selected class is below
 the configured minimum participant count. The database user needs permission
 to create temporary tables. The lists live only in the request, and the
 dashboard's SQL activity pane shows the submitted statements and rollbacks.
+
+Open **Database validation** from the dashboard header, select an exercise,
+and click **Run exercise**. The backend runs the corresponding existing file
+under `database/validation/` in a dedicated PostgreSQL session. You can expand
+the returned tables and messages and inspect the executed SQL in the activity
+pane. The exercises use temporary sample data and require the database's
+temporary-table privilege.
 
 ## GitHub Actions
 

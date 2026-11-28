@@ -1,0 +1,28 @@
+<section class="chart-card validation-panel" aria-labelledby="validationTitle">
+  <div class="card-heading">
+    <div>
+      <h2 id="validationTitle">Database validation</h2>
+      <p>Run the project’s SQL exercises in PostgreSQL using temporary sample data.</p>
+    </div>
+  </div>
+
+  <form id="validationForm" class="validation-controls">
+    <label class="control">
+      <span>Validation exercise</span>
+      <select id="validationExercise">
+        <option value="schema">Schema and constraints</option>
+        <option value="queries">SQL queries and joins</option>
+        <option value="transactions">Functions, procedures, triggers, and transactions</option>
+        <option value="normalization">Normalization</option>
+        <option value="concurrency">Concurrency and locking schedules</option>
+        <option value="performance">Indexes and query plans</option>
+      </select>
+    </label>
+    <button id="validationRun" type="submit" disabled>Run exercise</button>
+  </form>
+  <p id="validationStatus" class="status validation-status" role="status" hidden></p>
+  <div id="validationResults" class="validation-results" hidden>
+    <p class="validation-source">SQL file <code id="validationSource"></code></p>
+    <div id="validationOutputs"></div>
+  </div>
+</section>

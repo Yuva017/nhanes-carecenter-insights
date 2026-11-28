@@ -5,6 +5,7 @@ import json
 import logging
 
 from fastapi import FastAPI, HTTPException, Response
+from fastapi.encoders import jsonable_encoder
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from fastapi.staticfiles import StaticFiles
@@ -13,6 +14,7 @@ from sqlalchemy import text
 from sqlalchemy.exc import SQLAlchemyError
 
 from .analytics.export import ANALYTICS, PROJECT_ROOT, load_query
+from .dashboard_validation import ValidationExercise, run_dashboard_validation
 from .database_operations import Scenario, run_medication_operation
 from .db import get_engine
 from .medication_cohort import AgeBand, MedicationReview, analyze_medication_cohort, list_survey_periods
@@ -115,6 +117,19 @@ def cohort_response(cycle_id, age_band, include_sql, review=None):
     if queries is not None:
         result["queries"] = queries
     return JSONResponse(result, headers={"Cache-Control": "no-store"})
+
+
+@app.post("/api/validation/{exercise}")
+def dashboard_validation(exercise: ValidationExercise, include_sql: bool = False):
+    queries = [] if include_sql else None
+    try:
+        result = run_dashboard_validation(_engine(), exercise, queries)
+    except (KeyError, OSError, SQLAlchemyError) as error:
+        logger.warning("Validation exercise %s unavailable (%s)", exercise, type(error).__name__)
+        return unavailable("The validation exercise could not finish. Check SQL activity and try again.", queries)
+    if queries is not None:
+        result["queries"] = queries
+    return JSONResponse(jsonable_encoder(result), headers={"Cache-Control": "no-store"})
 
 
 class DashboardFiles(StaticFiles):

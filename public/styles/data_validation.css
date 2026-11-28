@@ -1,0 +1,102 @@
+.validation-panel {
+  margin-top: 1.25rem;
+}
+
+.validation-link {
+  display: inline-block;
+  margin-top: 0.7rem;
+  color: #125c55;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-underline-offset: 0.2em;
+}
+
+.validation-controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: end;
+  gap: 0.7rem;
+}
+
+.validation-controls .control,
+.validation-controls select {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.validation-controls button {
+  min-height: 2.55rem;
+  padding: 0.45rem 0.8rem;
+  border: 1px solid #26766e;
+  border-radius: 0.45rem;
+  background: #125c55;
+  color: #fff;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.validation-controls button:hover {
+  background: #0d4c46;
+}
+
+.validation-controls button:disabled {
+  opacity: 0.65;
+  cursor: wait;
+}
+
+.validation-status,
+.validation-results {
+  margin-top: 0.8rem;
+}
+
+.validation-source {
+  color: #52616b;
+  font-size: 0.85rem;
+  overflow-wrap: anywhere;
+}
+
+.validation-output {
+  margin-top: 0.5rem;
+  padding: 0.6rem 0.75rem;
+  border: 1px solid #e0e7e9;
+  border-radius: 0.45rem;
+  font-size: 0.9rem;
+}
+
+.validation-output summary {
+  font-weight: 600;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+
+.validation-output p,
+.validation-output pre {
+  margin: 0.6rem 0 0;
+}
+
+.validation-output pre {
+  padding: 0.55rem;
+  border-radius: 0.3rem;
+  background: #f3f6f7;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.validation-table-scroll {
+  margin-top: 0.4rem;
+  overflow-x: auto;
+}
+
+.validation-table {
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.validation-table th,
+.validation-table td {
+  padding: 0.45rem 0.85rem 0.45rem 0;
+  border-bottom: 1px solid #e0e7e9;
+  vertical-align: top;
+  white-space: pre-wrap;
+}

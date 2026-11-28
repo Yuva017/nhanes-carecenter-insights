@@ -17,24 +17,29 @@ psql "$DATABASE_URL" -X -f run_validation.sql
 
 Use a disposable database for [the two-session locking exercise](manual_transactions.md), which creates a shared table.
 
+The dashboard's **Database validation** section runs the six SQL exercises
+below using temporary sample data. Each run uses its own PostgreSQL session
+and shows query results and notices. The two-session exercise runs in `psql`
+using the linked instructions.
+
 ## Lecture map
 
-1. **Introduction.** Inspect the selected database and schema. Observe integrity enforcement and rollback in the later exercises. Start with `schema/relational_schema_checks.sql`.
-2. **Relational model.** Create tables with domains, candidate keys, primary keys and foreign keys. Use SQL to demonstrate relational selection, projection, rename, product, joins, union, intersection, and difference. See `schema/relational_schema_checks.sql` and `queries/query_operation_checks.sql`.
-3. **Introduction to SQL.** Filter, order, limit, match patterns, handle NULL, aggregate, use `HAVING`, nest queries and run INSERT, UPDATE and DELETE. See `queries/query_operation_checks.sql` and `transactions/routine_and_transaction_checks.sql`.
-4. **Intermediate and advanced SQL.** Run inner, natural, theta, left, right and full joins. Call a scalar function, a table-returning function and a procedure. Compare BEFORE row-level validation with AFTER statement-level auditing. See `queries/query_operation_checks.sql` and `transactions/routine_and_transaction_checks.sql`.
-5. **E/R modeling.** Inspect the constraints for a mandatory many-to-one cycle, an optional one-to-one profile, one-to-many medication events and a many-to-many participant/analyte relationship. Use subtype views to show total, disjoint specialization. See `schema/relational_schema_checks.sql`.
-6. **Relational design I.** Look for violations of a functional dependency with `GROUP BY` and `HAVING`. Rejoin two projections and observe the extra pairings in a lossy decomposition. See `normalization/normal_form_checks.sql`.
-7. **Relational design II.** Trace a simple candidate-key closure, see how the split right-hand sides imply an omitted transitive dependency, and check a decomposition by comparing both directions with `EXCEPT`. See `normalization/normal_form_checks.sql`.
-8. **BCNF.** Split participant facts from survey cycle descriptions, preserving both direct determinants. Reconstruct the wide sample using the shared cycle key. See `normalization/normal_form_checks.sql`.
-9. **3NF and 4NF.** Inspect a ternary advising relation whose non-key determinant is allowed by 3NF. Join independently recorded medication and analyte sets to see the repetition that a single table would introduce. See `normalization/normal_form_checks.sql`.
-10. **Transactions.** Commit multiple writes, roll back to a savepoint, and show trigger-induced failure. Run the interactive abort example to see the transaction reject subsequent statements until rollback. See `transactions/routine_and_transaction_checks.sql` and `manual_transactions.md`.
-11. **Concurrency control.** Construct a conflict graph from reads and writes and detect a cycle with a recursive query. Inspect read-from and final-writer information for view serializability. See `concurrency/concurrency_control_checks.sql`.
-12. **Lock protocols.** Query an event trace for 2PL and strict 2PL violations and find a deadlock in a sample waits-for graph. Observe real row-lock blocking using two sessions. See `concurrency/concurrency_control_checks.sql` and `manual_transactions.md`.
-13. **Timestamp control.** Compare basic timestamp ordering and Thomas's write rule on the same read and write attempts using `CASE`. See `concurrency/concurrency_control_checks.sql`.
-14. **Indexing.** Inspect primary, secondary, and clustered indexes and compare dense keys with sparse anchors on sorted sample pages. See `performance/index_and_query_plan_checks.sql`.
-15. **B-trees.** Run a range query and a composite lookup before and after building B-tree indexes, then insert and remove an indexed row. See `performance/index_and_query_plan_checks.sql`.
-16. **Hashing.** Use a PostgreSQL hash index for an equality query. Trace textbook static, extensible and linear bucket-address examples on synthetic keys. See `performance/index_and_query_plan_checks.sql`.
+1. **Introduction.** Inspect the selected database and schema. Observe integrity enforcement and rollback in the later exercises. Start with `schema/relational_schema.sql`.
+2. **Relational model.** Create tables with domains, candidate keys, primary keys and foreign keys. Use SQL to demonstrate relational selection, projection, rename, product, joins, union, intersection, and difference. See `schema/relational_schema.sql` and `queries/query_operation.sql`.
+3. **Introduction to SQL.** Filter, order, limit, match patterns, handle NULL, aggregate, use `HAVING`, nest queries and run INSERT, UPDATE and DELETE. See `queries/query_operation.sql` and `transactions/routine_and_transaction.sql`.
+4. **Intermediate and advanced SQL.** Run inner, natural, theta, left, right and full joins. Call a scalar function, a table-returning function and a procedure. Compare BEFORE row-level validation with AFTER statement-level auditing. See `queries/query_operation.sql` and `transactions/routine_and_transaction.sql`.
+5. **E/R modeling.** Inspect the constraints for a mandatory many-to-one cycle, an optional one-to-one profile, one-to-many medication events and a many-to-many participant/analyte relationship. Use subtype views to show total, disjoint specialization. See `schema/relational_schema.sql`.
+6. **Relational design I.** Look for violations of a functional dependency with `GROUP BY` and `HAVING`. Rejoin two projections and observe the extra pairings in a lossy decomposition. See `normalization/normal_form.sql`.
+7. **Relational design II.** Trace a simple candidate-key closure, see how the split right-hand sides imply an omitted transitive dependency, and check a decomposition by comparing both directions with `EXCEPT`. See `normalization/normal_form.sql`.
+8. **BCNF.** Split participant facts from survey cycle descriptions, preserving both direct determinants. Reconstruct the wide sample using the shared cycle key. See `normalization/normal_form.sql`.
+9. **3NF and 4NF.** Inspect a ternary advising relation whose non-key determinant is allowed by 3NF. Join independently recorded medication and analyte sets to see the repetition that a single table would introduce. See `normalization/normal_form.sql`.
+10. **Transactions.** Commit multiple writes, roll back to a savepoint, and show trigger-induced failure. Run the interactive abort example to see the transaction reject subsequent statements until rollback. See `transactions/routine_and_transaction.sql` and `manual_transactions.md`.
+11. **Concurrency control.** Construct a conflict graph from reads and writes and detect a cycle with a recursive query. Inspect read-from and final-writer information for view serializability. See `concurrency/concurrency_control.sql`.
+12. **Lock protocols.** Query an event trace for 2PL and strict 2PL violations and find a deadlock in a sample waits-for graph. Observe real row-lock blocking using two sessions. See `concurrency/concurrency_control.sql` and `manual_transactions.md`.
+13. **Timestamp control.** Compare basic timestamp ordering and Thomas's write rule on the same read and write attempts using `CASE`. See `concurrency/concurrency_control.sql`.
+14. **Indexing.** Inspect primary, secondary, and clustered indexes and compare dense keys with sparse anchors on sorted sample pages. See `performance/index_and_query_plan.sql`.
+15. **B-trees.** Run a range query and a composite lookup before and after building B-tree indexes, then insert and remove an indexed row. See `performance/index_and_query_plan.sql`.
+16. **Hashing.** Use a PostgreSQL hash index for an equality query. Trace textbook static, extensible and linear bucket-address examples on synthetic keys. See `performance/index_and_query_plan.sql`.
 
 The database runs the index and transaction operations. The textbook schedule checks and bucket traces are SQL teaching examples of the underlying algorithms.
 
