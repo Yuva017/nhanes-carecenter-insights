@@ -1,26 +1,65 @@
 <section class="chart-card operations-panel" aria-labelledby="operationsTitle">
   <div class="card-heading">
     <div>
-      <h2 id="operationsTitle">Medication workflow</h2>
-      <p>Run a PostgreSQL function, call a stored procedure, or test a trigger. Each run starts with one fresh sample case.</p>
+      <h2 id="operationsTitle">Medication cohort explorer</h2>
+      <p>Compare linked medication records across drug classes for the same survey cohort.</p>
     </div>
   </div>
-  <div class="control-row" id="operationActions" aria-label="Medication operations">
-    <button type="button" data-operation="summary">Read case summary</button>
-    <button type="button" data-operation="record">Record valid medication</button>
-    <button type="button" data-operation="reject">Try an unknown code</button>
-  </div>
-  <p id="operationStatus" class="status operation-status" role="status" aria-live="polite">Operations run on temporary synthetic records.</p>
-  <div id="operationResult" hidden>
-    <table class="operation-table">
-      <caption>Sample case results</caption>
-      <thead><tr><th scope="col">Check</th><th scope="col">Before</th><th scope="col">After</th></tr></thead>
-      <tbody>
-        <tr><th scope="row">Case status</th><td id="beforeStatus"></td><td id="afterStatus"></td></tr>
-        <tr><th scope="row">Medication count</th><td id="beforeCount"></td><td id="afterCount"></td></tr>
-      </tbody>
-    </table>
-    <p class="trigger-result">Trigger <strong id="triggerResult"></strong></p>
-    <ol id="operationSteps" class="operation-steps"></ol>
+  <form id="cohortForm">
+    <fieldset id="cohortFilters" class="cohort-controls" disabled>
+      <legend class="cohort-legend">Cohort filters</legend>
+      <label class="control">
+        <span>Survey period</span>
+        <select id="cohortPeriod">
+          <option value="">All periods</option>
+        </select>
+      </label>
+      <label class="control">
+        <span>Age group</span>
+        <select id="cohortAge">
+          <option value="all">All ages</option>
+          <option value="under20">Under 20</option>
+          <option value="20to39">20–39</option>
+          <option value="40to59">40–59</option>
+          <option value="60plus">60+</option>
+        </select>
+      </label>
+      <button type="submit">Analyze cohort</button>
+    </fieldset>
+  </form>
+  <p id="operationStatus" class="status operation-status" role="status" aria-live="polite"></p>
+  <div id="cohortResult" hidden>
+    <p class="cohort-total" id="cohortTotal"></p>
+    <p class="cohort-note">Shares use all loaded participants in this cohort as the denominator. A participant can appear in more than one drug class. Results are unweighted.</p>
+    <label class="control cohort-search" id="cohortSearchControl" hidden>
+      <span>Filter drug classes</span>
+      <input id="cohortSearch" type="search" />
+    </label>
+    <p id="cohortNoMatch" class="cohort-note" hidden>No drug classes match your search.</p>
+    <div class="cohort-table-wrap" id="cohortTableWrap" tabindex="0" role="region" aria-label="Medication counts by drug class" hidden>
+      <table class="operation-table cohort-table">
+        <thead>
+          <tr><th scope="col">Review</th><th scope="col">Drug class</th><th scope="col">Participants</th><th scope="col">Entries</th><th scope="col">Cohort share</th></tr>
+        </thead>
+        <tbody id="cohortRows"></tbody>
+      </table>
+    </div>
+    <form id="cohortReviewForm" hidden>
+      <fieldset id="reviewControls" class="cohort-controls">
+        <legend class="cohort-legend">Review list</legend>
+        <label class="control">
+          <span>Minimum participants per class</span>
+          <input id="cohortMinimum" type="number" min="1" max="2147483647" value="100" required />
+        </label>
+        <button type="submit" id="buildCohortReview" disabled>Build review list</button>
+        <span id="cohortSelection" class="cohort-note" aria-live="polite">0 of 12 selected</span>
+      </fieldset>
+      <p id="cohortReviewStatus" class="status operation-status" role="status" aria-live="polite" hidden></p>
+    </form>
+    <div id="cohortReviewResult" class="cohort-review-result" hidden>
+      <p id="cohortReviewSummary"></p>
+      <ul id="cohortReviewedClasses"></ul>
+      <button id="downloadCohortReview" type="button">Download review CSV</button>
+    </div>
   </div>
 </section>

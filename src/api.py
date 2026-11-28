@@ -15,6 +15,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from .analytics.export import ANALYTICS, PROJECT_ROOT, load_query
 from .database_operations import Scenario, run_medication_operation
 from .db import get_engine
+from .medication_cohort import AgeBand, MedicationReview, analyze_medication_cohort, list_survey_periods
 from .sql_activity import capture_sql
 
 logger = logging.getLogger(__name__)
@@ -23,6 +24,7 @@ app.add_middleware(
     CORSMiddleware,
     allow_origins=["https://yuva017.github.io"],
     allow_methods=["GET", "POST"],
+    allow_headers=["Content-Type"],
 )
 
 
@@ -78,6 +80,41 @@ def medication_operation(scenario: Scenario, include_sql: bool = False):
     except (KeyError, OSError, SQLAlchemyError, RuntimeError) as error:
         logger.warning("Could not run medication operation %s (%s)", scenario, type(error).__name__)
         return unavailable("Database operations are unavailable", queries)
+
+
+@app.get("/api/medication-cohort/options")
+def medication_cohort_options(include_sql: bool = False):
+    queries = [] if include_sql else None
+    try:
+        result = {"periods": list_survey_periods(_engine(), queries)}
+    except (KeyError, OSError, SQLAlchemyError) as error:
+        logger.warning("Medication cohort options unavailable (%s)", type(error).__name__)
+        return unavailable("Survey periods are unavailable", queries)
+    if queries is not None:
+        result["queries"] = queries
+    return JSONResponse(result, headers={"Cache-Control": "no-store"})
+
+
+@app.get("/api/medication-cohort")
+def medication_cohort(cycle_id: int | None = None, age_band: AgeBand = "all", include_sql: bool = False):
+    return cohort_response(cycle_id, age_band, include_sql)
+
+
+@app.post("/api/medication-cohort/review")
+def medication_cohort_review(review: MedicationReview, include_sql: bool = False):
+    return cohort_response(review.cycle_id, review.age_band, include_sql, review)
+
+
+def cohort_response(cycle_id, age_band, include_sql, review=None):
+    queries = [] if include_sql else None
+    try:
+        result = analyze_medication_cohort(_engine(), cycle_id, age_band, queries, review)
+    except (KeyError, OSError, SQLAlchemyError) as error:
+        logger.warning("Medication cohort unavailable (%s)", type(error).__name__)
+        return unavailable("Medication cohort data is unavailable", queries)
+    if queries is not None:
+        result["queries"] = queries
+    return JSONResponse(result, headers={"Cache-Control": "no-store"})
 
 
 class DashboardFiles(StaticFiles):

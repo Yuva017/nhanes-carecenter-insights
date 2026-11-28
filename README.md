@@ -112,18 +112,20 @@ deployment calls the Render API from its allowed origin.
 
 The collapsible **SQL activity** pane groups server-captured statements by
 chart request or medication action. It includes failed statements and
-rollbacks from the sample workflow. Entries are kept in the current page,
+rollbacks from the medication review. Entries are kept in the current page,
 and bound parameter values are excluded. The dashboard requests the trace
 with `?include_sql=true`; regular API responses keep their existing shape.
 
 Use `python -m src.analytics.export` to create optional JSON snapshots.
 The live dashboard does not read the exported files.
 
-The medication workflow on the backend site runs a PostgreSQL function,
-a procedure, and an INSERT trigger against synthetic records. The database
-role needs PostgreSQL temporary-table privileges for these operations.
-Every request rolls back the temporary changes. The invalid-code action
-also rolls back to a savepoint and displays the before-and-after values.
+The medication cohort explorer reads loaded NHANES aggregates by survey period
+and age group. Select up to 12 drug classes to prepare a downloadable review
+list. A PostgreSQL function calculates counts, a stored procedure assembles
+the list, and a trigger rejects the entire list if a selected class is below
+the configured minimum participant count. The database user needs permission
+to create temporary tables. The lists live only in the request, and the
+dashboard's SQL activity pane shows the submitted statements and rollbacks.
 
 ## GitHub Actions
 
