@@ -1,3 +1,5 @@
+import "./sql_activity.js";
+
 async function mountSection(id, templatePath) {
   const response = await fetch(new URL(templatePath, import.meta.url));
   if (!response.ok) {

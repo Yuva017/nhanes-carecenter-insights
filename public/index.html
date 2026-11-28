@@ -10,25 +10,45 @@
     <link rel="stylesheet" href="styles/components.css" />
     <link rel="stylesheet" href="styles/charts.css" />
     <link rel="stylesheet" href="styles/medication_workflow.css" />
+    <link rel="stylesheet" href="styles/sql_activity.css" />
   </head>
   <body>
-    <main class="dashboard">
-      <header class="page-header">
-        <p class="eyebrow">NHANES · 1988–2018</p>
-        <h1>CareCenter Insights</h1>
-        <p class="intro">
-          Explore health, medication, and dietary trends from the survey
-          database. Charts describe loaded survey records and are unweighted.
-        </p>
-        <p id="dashboardStatus" class="status" role="status" aria-live="polite">
-          Loading chart data…
-        </p>
-      </header>
+    <div class="dashboard-shell">
+      <aside id="sqlActivity" class="sql-pane" aria-labelledby="sqlActivityTitle" hidden>
+        <div class="sql-pane-heading">
+          <h2 id="sqlActivityTitle">SQL activity</h2>
+          <button id="sqlActivityMinimize" class="sql-pane-button" type="button">Minimize</button>
+        </div>
+        <p class="sql-pane-description">Statements sent to PostgreSQL by this page.</p>
+        <div class="sql-pane-toolbar">
+          <span id="sqlActivityCount">0 recent requests</span>
+          <button id="sqlActivityClear" class="sql-pane-button" type="button" disabled>Clear</button>
+        </div>
+        <p id="sqlActivityEmpty" class="sql-pane-empty">Chart requests and database actions will appear here.</p>
+        <ol id="sqlActivityHistory" class="sql-history" aria-label="Recent SQL requests"></ol>
+      </aside>
+      <main class="dashboard">
+        <header class="page-header">
+          <div class="dashboard-heading">
+            <p class="eyebrow">NHANES · 1988–2018</p>
+            <button class="sql-toggle" id="sqlActivityToggle" type="button"
+              aria-controls="sqlActivity" aria-expanded="false" hidden>Show SQL activity</button>
+          </div>
+          <h1>CareCenter Insights</h1>
+          <p class="intro">
+            Explore health, medication, and dietary trends from the survey
+            database. Charts describe loaded survey records and are unweighted.
+          </p>
+          <p id="dashboardStatus" class="status" role="status" aria-live="polite">
+            Loading chart data…
+          </p>
+        </header>
 
-      <div id="surveyCharts"></div>
-      <div id="medicationWorkflow"></div>
-      <noscript>Enable JavaScript to load the charts and medication workflow.</noscript>
-    </main>
+        <div id="surveyCharts"></div>
+        <div id="medicationWorkflow"></div>
+        <noscript>Enable JavaScript to load the charts and medication workflow.</noscript>
+      </main>
+    </div>
     <script type="module" src="scripts/main.js"></script>
   </body>
 </html>

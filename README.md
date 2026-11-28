@@ -110,6 +110,12 @@ records and are unweighted. On Render and during local development, the
 dashboard uses the same origin as the API. The project’s GitHub Pages
 deployment calls the Render API from its allowed origin.
 
+The collapsible **SQL activity** pane groups server-captured statements by
+chart request or medication action. It includes failed statements and
+rollbacks from the sample workflow. Entries are kept in the current page,
+and bound parameter values are excluded. The dashboard requests the trace
+with `?include_sql=true`; regular API responses keep their existing shape.
+
 Use `python -m src.analytics.export` to create optional JSON snapshots.
 The live dashboard does not read the exported files.
 

@@ -1,14 +1,10 @@
-import { apiURL } from "./api.js";
+import { requestAPI } from "./api.js";
 
 const status = document.getElementById("dashboardStatus");
 
-async function loadChartData(name) {
-  const response = await fetch(apiURL(`charts/${name}`));
-  if (!response.ok) {
-    throw new Error(`${name} returned HTTP ${response.status}`);
-  }
-
-  const rows = await response.json();
+async function loadChartData(name, label) {
+  const payload = await requestAPI(`charts/${name}`, label);
+  const rows = Array.isArray(payload) ? payload : payload?.rows;
   if (!Array.isArray(rows)) {
     throw new Error(`${name} must contain an array`);
   }
@@ -239,7 +235,8 @@ async function initializeDashboard() {
   ];
   const outcomes = await Promise.allSettled(charts.map(async ([dataset, canvas, draw]) => {
     try {
-      draw(requireRows(await loadChartData(dataset), dataset));
+      const title = document.getElementById(canvas).closest("article").querySelector("h2").textContent;
+      draw(requireRows(await loadChartData(dataset, title), dataset));
     } catch (error) {
       const message = document.createElement("p");
       message.className = "chart-unavailable";

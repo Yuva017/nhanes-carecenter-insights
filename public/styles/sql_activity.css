@@ -1,0 +1,151 @@
+.dashboard-shell {
+  min-height: 100vh;
+}
+
+.dashboard-heading {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem 1rem;
+  flex-wrap: wrap;
+}
+
+.sql-toggle,
+.sql-pane-button {
+  min-height: 2rem;
+  border: 1px solid #cbd6da;
+  border-radius: 0.4rem;
+  padding: 0.25rem 0.65rem;
+  font: inherit;
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.sql-toggle {
+  color: #125c55;
+  background: #fff;
+}
+
+.sql-toggle:hover {
+  background: #e7f3f0;
+}
+
+.sql-pane {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  height: 100dvh;
+  overflow: auto;
+  overscroll-behavior: contain;
+  padding: 1.1rem 0.9rem;
+  background: #182a36;
+  color: #edf4f5;
+  color-scheme: dark;
+}
+
+.sql-pane-heading,
+.sql-pane-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.sql-pane-heading h2 {
+  margin: 0;
+  font-size: 1.2rem;
+}
+
+.sql-pane-button {
+  color: #edf4f5;
+  background: #253d4b;
+  border-color: #506b78;
+}
+
+.sql-pane-button:hover {
+  background: #355365;
+}
+
+.sql-pane-button:disabled {
+  opacity: 0.55;
+  cursor: default;
+}
+
+.sql-pane-description,
+.sql-pane-toolbar,
+.sql-pane-empty {
+  font-size: 0.85rem;
+  color: #bed0d7;
+}
+
+.sql-pane-description {
+  margin: 0.55rem 0 1rem;
+}
+
+.sql-history {
+  padding: 0;
+  margin: 0.7rem 0 0;
+  list-style: none;
+  display: grid;
+  gap: 0.55rem;
+}
+
+.sql-history > li {
+  min-width: 0;
+  background: #223845;
+  border: 1px solid #3a5261;
+  border-radius: 0.45rem;
+  padding: 0.65rem;
+}
+
+.sql-history summary {
+  cursor: pointer;
+  font-weight: 600;
+  overflow-wrap: anywhere;
+}
+
+.sql-history summary small {
+  display: block;
+  margin: 0.35rem 0;
+  color: #bed0d7;
+  font-weight: 400;
+}
+
+.sql-statement {
+  font-size: 0.83rem;
+  margin-top: 0.45rem;
+}
+
+.sql-statement pre {
+  overflow: auto;
+  max-height: 22rem;
+  margin: 0.4rem 0 0;
+  padding: 0.55rem;
+  background: #101e28;
+  border-radius: 0.35rem;
+  line-height: 1.45;
+}
+
+@media (min-width: 901px) {
+  .dashboard-shell.sql-pane-open {
+    display: grid;
+    grid-template-columns: clamp(16rem, 24vw, 22rem) minmax(0, 1fr);
+  }
+}
+
+@media (min-width: 901px) and (max-width: 1150px) {
+  .sql-pane-open .chart-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .sql-pane {
+    position: fixed;
+    inset: 0 auto 0 0;
+    z-index: 10;
+    width: min(92vw, 22rem);
+    box-shadow: 0 0 24px rgb(0 0 0 / 35%);
+  }
+}

@@ -6,6 +6,8 @@ from typing import Literal
 from sqlalchemy import text
 from sqlalchemy.exc import DBAPIError
 
+from .sql_activity import capture_sql
+
 Scenario = Literal["summary", "record", "reject"]
 SETUP_SQL = (
     Path(__file__).resolve().parents[1]
@@ -18,8 +20,8 @@ SUMMARY = text("""
 RECORD = text("CALL pg_temp.workbench_record_medication(1, :code)")
 
 
-def run_medication_operation(engine, scenario: Scenario) -> dict:
-    with engine.connect() as connection:
+def run_medication_operation(engine, scenario: Scenario, queries: list | None = None) -> dict:
+    with engine.connect() as connection, capture_sql(connection, queries):
         transaction = connection.begin()
         try:
             connection.exec_driver_sql("SET LOCAL statement_timeout = '5s'")
@@ -46,4 +48,6 @@ def run_medication_operation(engine, scenario: Scenario) -> dict:
             steps.append("Read the case again before discarding the temporary data.")
         finally:
             transaction.rollback()
+            if queries is not None:
+                queries.append({"sql": "ROLLBACK", "status": "completed"})
     return {"before": before, "after": after, "trigger": trigger, "steps": steps}

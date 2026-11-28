@@ -1,4 +1,4 @@
-import { apiURL } from "./api.js";
+import { requestAPI } from "./api.js";
 
 const buttons = [...document.querySelectorAll("[data-operation]")];
 const status = document.getElementById("operationStatus");
@@ -18,21 +18,14 @@ function paintOperation(operation) {
   result.hidden = false;
 }
 
-async function runOperation(name) {
+async function runOperation(name, label) {
   buttons.forEach((button) => { button.disabled = true; });
   status.textContent = "Running database operation…";
   status.classList.remove("status-error");
   result.hidden = true;
   try {
-    const response = await fetch(apiURL(`operations/medications/${name}`), { method: "POST" });
-    if (!response.ok) {
-      throw new Error(
-        [404, 405].includes(response.status)
-          ? "Open the CareCenter backend site to run database operations."
-          : "Database operation is temporarily unavailable.",
-      );
-    }
-    paintOperation(await response.json());
+    const operation = await requestAPI(`operations/medications/${name}`, label, { method: "POST" });
+    paintOperation(operation);
     status.textContent = "Operation complete. The temporary session data has been discarded.";
   } catch (error) {
     status.textContent = error.message;
@@ -43,5 +36,5 @@ async function runOperation(name) {
 }
 
 buttons.forEach((button) => {
-  button.addEventListener("click", () => runOperation(button.dataset.operation));
+  button.addEventListener("click", () => runOperation(button.dataset.operation, button.textContent.trim()));
 });
