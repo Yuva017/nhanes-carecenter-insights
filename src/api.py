@@ -80,5 +80,13 @@ def medication_operation(scenario: Scenario, include_sql: bool = False):
         return unavailable("Database operations are unavailable", queries)
 
 
+class DashboardFiles(StaticFiles):
+    async def get_response(self, path, scope):
+        response = await super().get_response(path, scope)
+        # Allow conditional requests while ensuring the browser checks for deploys.
+        response.headers["Cache-Control"] = "no-cache"
+        return response
+
+
 # Register the API and compatibility route before serving the dashboard assets.
-app.mount("/", StaticFiles(directory=PROJECT_ROOT / "public", html=True), name="dashboard")
+app.mount("/", DashboardFiles(directory=PROJECT_ROOT / "public", html=True), name="dashboard")

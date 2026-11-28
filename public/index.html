@@ -49,6 +49,17 @@
         <noscript>Enable JavaScript to load the charts and medication workflow.</noscript>
       </main>
     </div>
-    <script type="module" src="scripts/main.js"></script>
+    <!-- Keep all dashboard modules on the same release to avoid mixing cached versions. -->
+    <script type="importmap">
+      {
+        "imports": {
+          "./scripts/api.js": "./scripts/api.js?v=sql-activity-1",
+          "./scripts/dashboard.js": "./scripts/dashboard.js?v=sql-activity-1",
+          "./scripts/database_operations.js": "./scripts/database_operations.js?v=sql-activity-1",
+          "./scripts/sql_activity.js": "./scripts/sql_activity.js?v=sql-activity-1"
+        }
+      }
+    </script>
+    <script type="module" src="scripts/main.js?v=sql-activity-1"></script>
   </body>
 </html>
